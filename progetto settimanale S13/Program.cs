@@ -157,16 +157,18 @@ bool ControlloCF(string codiceFiscale, string cognome, string nome, DateTime dat
                 return false;
             }
         }
-        if (sesso == "M")
+        if (sesso.ToUpper() == "M")
         {
-            if (!(dataNascita.Day.ToString() == (codiceArray[11] + codiceArray[12]).ToString()))
+            int dayInCodiceFiscale = int.Parse(codiceFiscale.Substring(9, 2));
+            if (dataNascita.Day != dayInCodiceFiscale)
             {
                 return false;
             }
         }
-        else if (sesso == "F")
+        else if (sesso.ToUpper() == "F")
         {
-            if (!(int.Parse(dataChar[0].ToString() + dataChar[1].ToString()) + 40  == int.Parse(codiceArray[9].ToString() + codiceArray[10].ToString())))
+            int dayInCodiceFiscale = int.Parse(codiceFiscale.Substring(9, 2));
+            if ((dataNascita.Day + 40) != dayInCodiceFiscale)
             {
                 return false;
             }
