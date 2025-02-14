@@ -46,10 +46,37 @@ bool boolean2 = false;
 do
 {
     Console.WriteLine(" ");
+    Console.WriteLine("==========================");
+    Console.WriteLine("Inserisci il tuo sesso M/F");
+    string sesso = Console.ReadLine();
+    if (sesso.ToUpper() == "M")
+    {
+        contribuente._sesso = sesso;
+        boolean2 = true;
+    }
+    else if (sesso.ToUpper() == "F")
+    {
+        contribuente._sesso = sesso;
+        boolean2 = true;
+    }
+    else
+    {
+        Console.WriteLine(" ");
+        Console.WriteLine("=========================");
+        Console.WriteLine("Inserisci un sesso valido");
+        boolean2 = false;
+    }
+} while (!boolean2);
+
+
+bool boolean3 = false;
+do
+{
+    Console.WriteLine(" ");
     Console.WriteLine("========================");
     Console.WriteLine("Inserisci codice fiscale");
     string codiceFiscale = Console.ReadLine();
-    if (!ControlloCF(codiceFiscale, contribuente._cognome, contribuente._nome))
+    if (!ControlloCF(codiceFiscale, contribuente._cognome, contribuente._nome, contribuente._dataDiNascita, contribuente._sesso))
     {
         Console.WriteLine(" ");
         Console.WriteLine("Il codice fiscale non è valido");
@@ -57,37 +84,10 @@ do
     else
     {
         contribuente._codiceFiscale = codiceFiscale;
-        boolean2 = true;
+        boolean3 = true;
     }
 }
-while (!boolean2);
-
-
-bool boolean3 = false;
-do
-{
-    Console.WriteLine(" ");
-    Console.WriteLine("==========================");
-    Console.WriteLine("Inserisci il tuo sesso M/F");
-    string sesso = Console.ReadLine();
-    if (sesso.ToUpper() == "M")
-    {
-        contribuente._sesso = sesso;
-        boolean3 = true;
-    }
-    else if (sesso.ToUpper() == "F")
-    {
-        contribuente._sesso = sesso;
-        boolean3 = true;
-    }
-    else
-    {
-        Console.WriteLine(" ");
-        Console.WriteLine("=========================");
-        Console.WriteLine("Inserisci un sesso valido");
-        boolean3 = false;
-    }
-} while (!boolean3);
+while (!boolean3);
 
 
 bool boolean4 = false;
@@ -131,14 +131,18 @@ do
     }
 } while (!boolean5);
 
-bool ControlloCF(string codiceFiscale, string cognome, string nome)
+bool ControlloCF(string codiceFiscale, string cognome, string nome, DateTime dataNascita, string sesso)
 {
     if (regex.IsMatch(codiceFiscale))
     {
+        string letter;
         string codiceAbbreviato = codiceFiscale.Substring(0, 3);
         string codiceAbbreviato2 = codiceFiscale.Substring(3, 3);
+        string dataDiNascita = dataNascita.ToString();
+        char[] codiceArray = codiceFiscale.ToCharArray();
         char[] codiceChar = codiceAbbreviato.ToCharArray();
         char[] codiceChar2 = codiceAbbreviato2.ToCharArray();
+        char[] dataChar = dataDiNascita.ToCharArray();
         for (int i = 0; i < codiceChar.Length; i++)
         {
             if (!cognome.ToUpper().Contains(codiceChar[i]))
@@ -152,6 +156,31 @@ bool ControlloCF(string codiceFiscale, string cognome, string nome)
             {
                 return false;
             }
+        }
+        if (sesso == "M")
+        {
+            if (!(dataNascita.Day.ToString() == (codiceArray[11] + codiceArray[12]).ToString()))
+            {
+                return false;
+            }
+        }
+        else if (sesso == "F")
+        {
+            if (!(int.Parse(dataChar[0].ToString() + dataChar[1].ToString()) + 40  == int.Parse(codiceArray[9].ToString() + codiceArray[10].ToString())))
+            {
+                return false;
+            }
+        }
+        if (!(dataChar[8] == codiceArray[6] && dataChar[9] == codiceArray[7]))
+        {
+            return false;
+        }
+        string[] months = { "A", "B", "C", "D", "E", "H", "L", "M", "P", "R", "S", "T" };
+        int monthIndex = dataNascita.Month - 1;
+        letter = months[monthIndex];
+        if (!(letter == codiceArray[8].ToString()))
+        {
+            return false;
         }
         return true;
     }
