@@ -44,7 +44,8 @@
         public void getData()
         {
             Imposta();
-            Console.WriteLine($"==================================================\r\n\r\nCALCOLO DELL'IMPOSTA DA VERSARE:\r\n\r\nContribuente: {_nome} {_cognome}, \r\n\r\nnato il {_dataDiNascita} ({_sesso}), \r\n\r\nresidente in {_residenza}, \r\n\r\ncodice fiscale: {_codiceFiscale}\r\n\r\nReddito dichiarato: {_redditoAnnuale}€\r\n\r\nIMPOSTA DA VERSARE: {_imposta}€");
+            Console.WriteLine(" ");
+            Console.WriteLine($"==================================================\r\n\r\nCALCOLO DELL'IMPOSTA DA VERSARE:\r\n\r\nContribuente: {_nome} {_cognome}, \r\n\r\nnato il {_dataDiNascita.ToShortDateString()} ({_sesso}), \r\n\r\nresidente in {_residenza}, \r\n\r\ncodice fiscale: {_codiceFiscale}\r\n\r\nReddito dichiarato: {_redditoAnnuale}€\r\n\r\nIMPOSTA DA VERSARE: {_imposta}€");
         }
     } 
 }
